@@ -35,3 +35,32 @@ for idx, cont in enumerate(contornos):
         med.append([mediaB,mediaG, mediaR])
 
 mediaColores = np.array(med)
+
+def objetos(imagen, contorno, label_indices, burCant):
+    mask = np.zeros_like(imagen[:, :, 0])
+    cv2.drawContours(mask, [contorno[i] for i in label_indices], -1, (255), -1)
+    masked_image = cv2.bitwise_and(imagen, imagen, mask=mask)
+    masked_image = cv2.putText(masked_image, f'{burCant} burbujas', (200, 1200), cv2.FONT_HERSHEY_SIMPLEX,
+                        fontScale=3, color=(255, 255, 255), thickness=10, lineType=cv2.LINE_AA)
+    return masked_image
+
+# Llama a la función K-Means
+
+k = 6  # Número de clústeres
+max_iterations = 10
+clusters, centroids, labels = kmeans(mediaColores, k, max_iterations)
+#********************************************
+# Dibuja y guarda las imágenes segmentadas
+img = imagen.copy()
+for label in range(k):
+    label_indices = np.where(labels == label)[0]
+    # print(label)
+    print(label_indices)
+    burCant = len(label_indices)
+    masked_image = objetos(imagen, contornos, label_indices, burCant)
+    img = cv2.hconcat([img, masked_image])
+
+cv2.imwrite('colores.png', img)
+plt.imshow(cv2.cvtColor(img, cv2.COLOR_BGR2RGB) )
+plt.axis('off')
+plt.show()
