@@ -1,2 +1,2 @@
 # P2.1_SegmentacionVA
-# 🚀 Vision Artifical 5 Semestre IA
+# 🚀 Vision Artificial 5 Semestre IA
