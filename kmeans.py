@@ -64,3 +64,21 @@ cv2.imwrite('colores.png', img)
 plt.imshow(cv2.cvtColor(img, cv2.COLOR_BGR2RGB) )
 plt.axis('off')
 plt.show()
+
+# Llama a la función K-Means para el metodo del codo
+k_values = range(1, 10)
+inertia_values = []
+
+for k in k_values:
+    kmeans = KMeans(n_clusters=k)
+    kmeans.fit(mediaColores)
+    inertia_values.append(kmeans.inertia_)
+
+# Traza el gráfico de la puntuación de varianza en función de k
+plt.figure(figsize=(8, 6))
+plt.plot(k_values, inertia_values, marker='o')
+plt.xlabel('Número de Clústeres (k)')
+plt.ylabel('Puntuación de Varianza (Inertia)')
+plt.title('Método del Codo para Determinar k')
+plt.grid(True)
+plt.savefig('codoPlot.png')
